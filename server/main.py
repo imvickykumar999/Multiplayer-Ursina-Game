@@ -105,7 +105,7 @@ def main():
     server_addr = socket.gethostbyname(hostname)
 
     print("\nServer started, listening for new connections...")
-    print(f'IPV4 Address = {server_addr}:8000')
+    print(f'IPV4 Address = {server_addr}')
 
     while True:
         # Accept new connection and assign unique ID
