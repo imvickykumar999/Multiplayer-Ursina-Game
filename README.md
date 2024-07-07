@@ -1,7 +1,12 @@
 # Ursina FPS
-A small FPS game made in Python 3 using the Ursina Engine.
 
-## Playing the game
+        A small FPS game made in Python 3 using the Ursina Engine.
+
+![image](https://github.com/imvickykumar999/Multiplayer-Ursina-Game/assets/50515418/fa97c0d4-47b8-402a-abb9-daa494caa11a)
+
+Playing the game
+---
+
 Install the dependencies with `pip install -r requirements.txt` and do `python3 game/main.py` to run the game.
 
 For example: (use `ipconfig` command to know your server IP)
