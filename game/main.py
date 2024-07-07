@@ -13,11 +13,10 @@ from bullet import Bullet
 
 
 username = input("Enter your username: ")
+server_addr = input("Enter IPv4 Address: ")
+server_port = input("Enter server port: ")
 
 while True:
-    server_addr = input("Enter IPv4 Address: ")
-    server_port = input("Enter server port: ")
-
     try:
         server_port = int(server_port)
     except ValueError:
@@ -59,7 +58,9 @@ sky = ursina.Entity(
     scale=9999,
     double_sided=True
 )
-player = Player(ursina.Vec3(0, 1, 0))
+
+network = Network(server_addr, server_port, username)  
+player = Player(ursina.Vec3(0, 1, 0), network)
 prev_pos = player.world_position
 prev_dir = player.world_rotation_y
 enemies = []

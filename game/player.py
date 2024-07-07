@@ -1,9 +1,10 @@
 import ursina
 from ursina.prefabs.first_person_controller import FirstPersonController
+from bullet import Bullet
 
 
 class Player(FirstPersonController):
-    def __init__(self, position: ursina.Vec3):
+    def __init__(self, position: ursina.Vec3, network):
         super().__init__(
             position=position,
             model="cube",
@@ -43,6 +44,8 @@ class Player(FirstPersonController):
         )
 
         self.health = 100
+        self.network = network
+        self.gun_sound = ursina.Audio('assets/bullet.mp3', autoplay=False)
         self.death_message_shown = False
 
     def death(self):
@@ -60,6 +63,9 @@ class Player(FirstPersonController):
             scale=3
         )
 
+        ursina.mouse.locked = False
+        ursina.mouse.visible = True
+
     def update(self):
         self.healthbar.scale_x = self.health / 100 * self.healthbar_size.x
 
@@ -68,3 +74,8 @@ class Player(FirstPersonController):
                 self.death()
         else:
             super().update()
+
+    def input(self, key):
+        if key == 'left mouse down':
+            Bullet(position=self.position, direction=self.rotation_y, x_direction=self.rotation_x, network=self.network)
+            self.gun_sound.play()
