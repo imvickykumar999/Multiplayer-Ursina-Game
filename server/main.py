@@ -101,7 +101,11 @@ def handle_messages(identifier: str):
 
 
 def main():
-    print("Server started, listening for new connections...")
+    hostname = socket.gethostname()
+    server_addr = socket.gethostbyname(hostname)
+
+    print("\nServer started, listening for new connections...")
+    print(f'IPV4 Address = {server_addr}:8000')
 
     while True:
         # Accept new connection and assign unique ID

@@ -11,10 +11,11 @@ from player import Player
 from enemy import Enemy
 from bullet import Bullet
 
-
 username = input("Enter your username: ")
-server_addr = input("Enter IPv4 Address: ")
-server_port = input("Enter server port: ")
+server_port = 8000
+
+hostname = socket.gethostname()
+server_addr = socket.gethostbyname(hostname)
 
 while True:
     try:
