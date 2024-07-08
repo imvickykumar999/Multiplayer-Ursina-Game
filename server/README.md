@@ -1,5 +1,7 @@
 # `server.exe`
 
+To build an executable (`exe` file) for your `main.py` script using PyInstaller with specific options (`--onefile`, `--windowed`, `--name`), follow these steps:
+
 ### Step-by-Step Guide:
 
 1. **Open Terminal (Command Prompt)**:
@@ -8,11 +10,11 @@
 
 2. **Navigate to Your Project Directory**:
 
-   - Use the `cd` command to change directory to where your `server.py` script is located. For example, if your script is in a directory named `server_project`, you would type:
+   - Use the `cd` command to change directory to where your `main.py` script is located. For example, if your script is in a directory named `game_project`, you would type:
      ```
-     cd path/to/server_project
+     cd path/to/game_project
      ```
-     Replace `path/to/server_project` with the actual path where your `server.py` script resides.
+     Replace `path/to/game_project` with the actual path where your `main.py` script resides.
 
 3. **Verify PyInstaller Installation**:
 
@@ -25,80 +27,33 @@
      pip install pyinstaller
      ```
 
-4. **Create a `main.spec` File**:
+4. **Run PyInstaller Command**:
 
-   - In your project directory (`server_project`), create a file named `main.spec`. You can create this file using any text editor like Notepad, Atom, VS Code, etc.
+   - Once in your project directory (`game_project`), run the following command to build your executable:
 
-5. **Edit `main.spec` File**:
-
-   - Copy and paste the following content into your `main.spec` file:
-     ```python
-     # -*- mode: python ; coding: utf-8 -*-
-
-     block_cipher = None
-
-     a = Analysis(
-         ['server.py'],  # Replace 'server.py' with the actual name of your server script
-         pathex=['.'],
-         binaries=[],
-         datas=[],
-         hiddenimports=[],
-         hookspath=[],
-         hooksconfig={},
-         runtime_hooks=[],
-         excludes=[],
-         noarchive=False,
-         optimize=0,
-     )
-     pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
-
-     exe = EXE(
-         pyz,
-         a.scripts,
-         [],
-         exclude_binaries=True,
-         name='myserver',  # Specify your server executable name here
-         debug=False,
-         bootloader_ignore_signals=False,
-         strip=False,
-         upx=True,
-         upx_exclude=[],
-         runtime_tmpdir=None,
-         console=True,  # Set to True to keep a console window open for server logging
-         disable_windowed_traceback=False,
-         argv_emulation=False,
-         target_arch=None,
-         codesign_identity=None,
-         entitlements_file=None,
-     )
-     ```
-     - Replace `'server.py'` with the actual filename of your server script if it differs.
-
-6. **Save `main.spec` File**:
-
-   - Save the `main.spec` file in the same directory where your `server.py` script is located (`server_project`).
-
-7. **Run PyInstaller**:
-
-   - In your terminal or command prompt, while still in the `server_project` directory, run PyInstaller with your `main.spec` file:
-     ```
-     pyinstaller main.spec
+     ```bash
+     pyinstaller main.py --onefile --name=mygame
      ```
 
-8. **Build Process**:
+     - `main.py`: Replace with the actual filename of your Python script if it differs.
+     - `--onefile`: This option bundles everything into a single executable file.
+     - `--windowed`: This option hides the console window, suitable for GUI applications.
+     - `--name=mygame`: Specifies the name of the executable (`mygame.exe` on Windows, `mygame` on Unix-like systems).
 
-   - PyInstaller will start analyzing your script (`server.py`), resolving dependencies, and bundling everything into a standalone executable.
+5. **Build Process**:
 
-9. **Locate Executable**:
+   - PyInstaller will start analyzing your `main.py` script, resolving dependencies, and bundling everything into a standalone executable.
 
-   - After the build completes successfully, navigate to the `dist` directory within your `server_project` directory. You should find your executable file named `myserver` (or `myserver.exe` on Windows).
+6. **Locate Executable**:
 
-10. **Testing**:
+   - After the build completes successfully, navigate to the `dist` directory within your `game_project` directory. You should find your executable file named `mygame` (or `mygame.exe` on Windows).
 
-    - Run the generated executable (`myserver` or `myserver.exe`) to test your server application. It should start and listen for connections as configured in your `server.py` script.
+7. **Testing**:
 
-11. **Graceful Shutdown**:
+   - Run the generated executable (`mygame` or `mygame.exe`) to test your application. It should launch as a standalone windowed application, as configured by the `--windowed` option.
 
-    - Ensure your server script handles exits gracefully, such as by catching `KeyboardInterrupt` (`Ctrl + C` in the terminal) to allow for clean shutdown of the server.
+8. **Distribution**:
 
-By following these steps, you'll have successfully created a standalone executable for your server script using PyInstaller, making it easier to distribute and run your server application on different systems.
+   - You can now distribute the generated executable (`mygame` or `mygame.exe`) to others. They can run it without needing Python or any dependencies installed separately.
+
+By following these steps, you'll have successfully created a standalone executable for your Python script (`main.py`) using PyInstaller, configured to be a single-file, windowed application named `mygame`. Adjust the options (`--onefile`, `--windowed`, `--name`) according to your specific needs and preferences.
