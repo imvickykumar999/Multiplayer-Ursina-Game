@@ -79,3 +79,5 @@ class Player(FirstPersonController):
         if key == 'left mouse down':
             Bullet(position=self.position, direction=self.rotation_y, x_direction=self.rotation_x, network=self.network)
             self.gun_sound.play()
+        if key == 'space':
+            self.jump()

@@ -133,6 +133,11 @@ def receive():
 
 
 def update():
+    if ursina.held_keys['escape']:
+        exit()
+        # ursina.mouse.locked = False
+        # ursina.mouse.visible = True
+
     if player.health > 0:
         global prev_pos, prev_dir
 
