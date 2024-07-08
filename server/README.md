@@ -1,3 +1,5 @@
+# `client.exe`
+
 To handle the situation where your `main.py` takes input from the user and ensure all assets are included in the executable, you need to ensure the `PyInstaller` configuration includes all necessary files and handles user inputs correctly.
 
 Here’s a step-by-step guide to creating an executable with `PyInstaller` for a script that takes user input and includes additional assets:
@@ -39,35 +41,52 @@ Here’s a step-by-step guide to creating an executable with `PyInstaller` for a
 4. **Edit the Spec File**:
    Edit the generated `mygame.spec` file to include your assets. Locate the `Analysis` section and add your assets to the `datas` list:
 
-   ```python
+   ```spec
    # mygame.spec
    # -*- mode: python ; coding: utf-8 -*-
-
+   
    block_cipher = None
-
+   
    a = Analysis(
        ['main.py'],
-       pathex=[],
+       pathex=['.'],
        binaries=[],
        datas=[
            ('assets/bullet.mp3', 'assets'),
-           ('assets/file2', 'assets'),
-           ('assets/file3', 'assets'),
-           ('assets/file4', 'assets')
+           ('assets/floor.png', 'assets'),
+           ('assets/sky.png', 'assets'),
+           ('assets/wall.png', 'assets')
        ],
-       hiddenimports=[],
-       ...
+       hiddenimports=['tkinter', 'ursina'],
+       hookspath=[],
+       hooksconfig={},
+       runtime_hooks=[],
+       excludes=[],
+       noarchive=False,
+       optimize=0,
    )
-
    pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
-
+   
    exe = EXE(
        pyz,
        a.scripts,
        a.binaries,
        a.zipfiles,
        a.datas,
-       ...
+       [],
+       name='mygame',
+       debug=False,
+       bootloader_ignore_signals=False,
+       strip=False,
+       upx=True,
+       upx_exclude=[],
+       runtime_tmpdir=None,
+       console=False,  # Set to True if you need a console window for debugging
+       disable_windowed_traceback=False,
+       argv_emulation=False,  # Set to False as it's not needed for a GUI app without a console
+       target_arch=None,
+       codesign_identity=None,
+       entitlements_file=None,
    )
    ```
 
@@ -78,19 +97,76 @@ Here’s a step-by-step guide to creating an executable with `PyInstaller` for a
    from ursina import Ursina, Vec3
    from player import Player
    from network import Network
-
+   import tkinter as tk
+   from tkinter import simpledialog
+   
+   def get_user_input():
+       root = tk.Tk()
+       root.withdraw()
+       
+       # Define custom font
+       custom_font = tk.font.Font(family="Helvetica", size=14, weight="bold")
+       
+       # Prompt for username
+       username_dialog = tk.Toplevel(root)
+       username_dialog.geometry("300x150")
+       username_dialog.title("Enter Username")
+       
+       username_label = tk.Label(username_dialog, text="Enter your username:", font=custom_font)
+       username_label.pack(pady=10)
+       
+       username_var = tk.StringVar()
+       username_entry = tk.Entry(username_dialog, textvariable=username_var, font=custom_font, width=20)
+       username_entry.pack(pady=5)
+       username_entry.focus_set()
+       
+       def on_username_ok():
+           username_dialog.destroy()
+       
+       ok_button = tk.Button(username_dialog, text="OK", command=on_username_ok, font=custom_font)
+       ok_button.pack(pady=10)
+       
+       root.wait_window(username_dialog)
+       
+       username = username_var.get() or "default"
+       
+       # Prompt for server address
+       server_dialog = tk.Toplevel(root)
+       server_dialog.geometry("300x150")
+       server_dialog.title("Enter Server Address")
+       
+       server_label = tk.Label(server_dialog, text="Enter server address:", font=custom_font)
+       server_label.pack(pady=10)
+       
+       server_var = tk.StringVar()
+       server_entry = tk.Entry(server_dialog, textvariable=server_var, font=custom_font, width=20)
+       server_entry.pack(pady=5)
+       server_entry.focus_set()
+       
+       def on_server_ok():
+           server_dialog.destroy()
+       
+       ok_button = tk.Button(server_dialog, text="OK", command=on_server_ok, font=custom_font)
+       ok_button.pack(pady=10)
+       
+       root.wait_window(server_dialog)
+       
+       server_addr = server_var.get()
+       
+       return username, server_addr
+   
    def main():
        app = Ursina()
-
-       server_addr = input("Enter server address: ")
-       server_port = int(input("Enter server port: "))
-       username = input("Enter your username: ")
-
-       network = Network(server_addr, server_port, username)
-       player = Player(position=Vec3(0, 1, 0), network=network)
-
-       app.run()
-
+   
+       username, server_addr = get_user_input()
+       
+       if server_addr:
+           network = Network(server_addr, 12345, username)  # Example port number
+           player = Player(position=Vec3(0, 1, 0), network=network)
+           app.run()
+       else:
+           print("Server address input was canceled or not completed correctly")
+   
    if __name__ == "__main__":
        main()
    ```
@@ -104,30 +180,5 @@ Here’s a step-by-step guide to creating an executable with `PyInstaller` for a
 
 7. **Locate the Executable**:
    The executable will be created in the `dist` directory inside your project folder.
-
-### Full Example `main.py`
-
-Here’s an example `main.py` script that handles user input:
-
-```python
-from ursina import Ursina, Vec3
-from player import Player
-from network import Network
-
-def main():
-    app = Ursina()
-
-    server_addr = input("Enter server address: ")
-    server_port = int(input("Enter server port: "))
-    username = input("Enter your username: ")
-
-    network = Network(server_addr, server_port, username)
-    player = Player(position=Vec3(0, 1, 0), network=network)
-
-    app.run()
-
-if __name__ == "__main__":
-    main()
-```
 
 With this setup, your `main.py` script will prompt the user for input when the executable is run, and `PyInstaller` will package all required assets into the executable.
