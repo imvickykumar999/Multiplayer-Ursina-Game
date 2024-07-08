@@ -4,17 +4,71 @@ import socket
 import threading
 import ursina
 from network import Network
-
 from floor import Floor
 from map import Map
 from player import Player
 from enemy import Enemy
 from bullet import Bullet
+import tkinter as tk
+from tkinter import font
+
+def get_user_input():
+    root = tk.Tk()
+    root.withdraw()
+    
+    custom_font = font.Font(family="Helvetica", size=14, weight="bold")
+    username_dialog = tk.Toplevel(root)
+    username_dialog.geometry("300x150")
+    username_dialog.title("Enter Username")
+    
+    username_label = tk.Label(username_dialog, text="Enter your username:", font=custom_font)
+    username_label.pack(pady=10)
+    
+    username_var = tk.StringVar()
+    username_entry = tk.Entry(username_dialog, textvariable=username_var, font=custom_font, width=20)
+    username_entry.pack(pady=5)
+    username_entry.focus_set()
+    
+    def on_username_ok():
+        username_dialog.destroy()
+    
+    ok_button = tk.Button(username_dialog, text="OK", command=on_username_ok, font=custom_font)
+    ok_button.pack(pady=10)
+    
+    root.wait_window(username_dialog)
+    username = username_var.get() or "default"
+    
+    # Prompt for server address
+    server_dialog = tk.Toplevel(root)
+    server_dialog.geometry("300x150")
+    server_dialog.title("Enter Server Address")
+    
+    server_label = tk.Label(server_dialog, text="Enter server address:", font=custom_font)
+    server_label.pack(pady=10)
+    
+    server_var = tk.StringVar()
+    server_entry = tk.Entry(server_dialog, textvariable=server_var, font=custom_font, width=20)
+    server_entry.pack(pady=5)
+    server_entry.focus_set()
+    
+    def on_server_ok():
+        server_dialog.destroy()
+    
+    ok_button = tk.Button(server_dialog, text="OK", command=on_server_ok, font=custom_font)
+    ok_button.pack(pady=10)
+    
+    root.wait_window(server_dialog)
+    server_addr = server_var.get()
+    return username, server_addr
+
+# username = input("Enter your username: ")
+# server_addr = input("Enter IPv4 address: ")
+
+server_port = 8000
+username, server_addr = get_user_input()
 
 print()
-username = input("Enter your username: ")
-server_addr = input("Enter IPv4 address: ")
-server_port = 8000
+print(username, server_addr)
 
 while True:
     try:
@@ -25,7 +79,6 @@ while True:
 
     n = Network(server_addr, server_port, username)
     n.settimeout(5)
-
     error_occurred = False
 
     try:
@@ -64,7 +117,6 @@ player = Player(ursina.Vec3(0, 1, 0), network)
 prev_pos = player.world_position
 prev_dir = player.world_rotation_y
 enemies = []
-
 
 def receive():
     while True:
@@ -115,7 +167,6 @@ def receive():
 
         elif info["object"] == "health_update":
             enemy_id = info["id"]
-
             enemy = None
 
             if enemy_id == n.id:
