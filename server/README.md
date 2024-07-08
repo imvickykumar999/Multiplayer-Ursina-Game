@@ -1,184 +1,104 @@
-# `client.exe`
+# `server.exe`
 
-To handle the situation where your `main.py` takes input from the user and ensure all assets are included in the executable, you need to ensure the `PyInstaller` configuration includes all necessary files and handles user inputs correctly.
+### Step-by-Step Guide:
 
-Here’s a step-by-step guide to creating an executable with `PyInstaller` for a script that takes user input and includes additional assets:
+1. **Open Terminal (Command Prompt)**:
 
-1. **Install PyInstaller**:
-   Make sure `PyInstaller` is installed:
+   - Open your terminal or command prompt application on your computer. You'll use this to run commands and navigate directories.
 
-   ```sh
-   pip install pyinstaller
-   ```
+2. **Navigate to Your Project Directory**:
 
-2. **Organize Your Project**:
-   Ensure your project directory is structured like this:
+   - Use the `cd` command to change directory to where your `server.py` script is located. For example, if your script is in a directory named `server_project`, you would type:
+     ```
+     cd path/to/server_project
+     ```
+     Replace `path/to/server_project` with the actual path where your `server.py` script resides.
 
-   ```
-   your_project/
-   ├── assets/
-   │   ├── bullet.mp3
-   │   ├── file2
-   │   ├── file3
-   │   └── file4
-   ├── bullet.py
-   ├── enemy.py
-   ├── floor.py
-   ├── main.py
-   ├── map.py
-   ├── network.py
-   ├── player.py
-   └── setup.py
-   ```
+3. **Verify PyInstaller Installation**:
 
-3. **Create a Spec File**:
-   First, generate a default spec file:
+   - Before proceeding, ensure that PyInstaller is installed in your Python environment. You can check by running:
+     ```
+     pyinstaller --version
+     ```
+     If PyInstaller is installed, you'll see its version number. If not, you'll need to install it using `pip`. You can install PyInstaller with:
+     ```
+     pip install pyinstaller
+     ```
 
-   ```sh
-   pyinstaller main.py --onefile --windowed --name=mygame
-   ```
+4. **Create a `main.spec` File**:
 
-4. **Edit the Spec File**:
-   Edit the generated `mygame.spec` file to include your assets. Locate the `Analysis` section and add your assets to the `datas` list:
+   - In your project directory (`server_project`), create a file named `main.spec`. You can create this file using any text editor like Notepad, Atom, VS Code, etc.
 
-   ```spec
-   # mygame.spec
-   # -*- mode: python ; coding: utf-8 -*-
-   
-   block_cipher = None
-   
-   a = Analysis(
-       ['main.py'],
-       pathex=['.'],
-       binaries=[],
-       datas=[
-           ('assets/bullet.mp3', 'assets'),
-           ('assets/floor.png', 'assets'),
-           ('assets/sky.png', 'assets'),
-           ('assets/wall.png', 'assets')
-       ],
-       hiddenimports=['tkinter', 'ursina'],
-       hookspath=[],
-       hooksconfig={},
-       runtime_hooks=[],
-       excludes=[],
-       noarchive=False,
-       optimize=0,
-   )
-   pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
-   
-   exe = EXE(
-       pyz,
-       a.scripts,
-       a.binaries,
-       a.zipfiles,
-       a.datas,
-       [],
-       name='mygame',
-       debug=False,
-       bootloader_ignore_signals=False,
-       strip=False,
-       upx=True,
-       upx_exclude=[],
-       runtime_tmpdir=None,
-       console=False,  # Set to True if you need a console window for debugging
-       disable_windowed_traceback=False,
-       argv_emulation=False,  # Set to False as it's not needed for a GUI app without a console
-       target_arch=None,
-       codesign_identity=None,
-       entitlements_file=None,
-   )
-   ```
+5. **Edit `main.spec` File**:
 
-5. **Handle User Input**:
-   Ensure your `main.py` script correctly handles user input. For example:
+   - Copy and paste the following content into your `main.spec` file:
+     ```python
+     # -*- mode: python ; coding: utf-8 -*-
 
-   ```python
-   from ursina import Ursina, Vec3
-   from player import Player
-   from network import Network
-   import tkinter as tk
-   from tkinter import simpledialog
-   
-   def get_user_input():
-       root = tk.Tk()
-       root.withdraw()
-       
-       # Define custom font
-       custom_font = tk.font.Font(family="Helvetica", size=14, weight="bold")
-       
-       # Prompt for username
-       username_dialog = tk.Toplevel(root)
-       username_dialog.geometry("300x150")
-       username_dialog.title("Enter Username")
-       
-       username_label = tk.Label(username_dialog, text="Enter your username:", font=custom_font)
-       username_label.pack(pady=10)
-       
-       username_var = tk.StringVar()
-       username_entry = tk.Entry(username_dialog, textvariable=username_var, font=custom_font, width=20)
-       username_entry.pack(pady=5)
-       username_entry.focus_set()
-       
-       def on_username_ok():
-           username_dialog.destroy()
-       
-       ok_button = tk.Button(username_dialog, text="OK", command=on_username_ok, font=custom_font)
-       ok_button.pack(pady=10)
-       
-       root.wait_window(username_dialog)
-       
-       username = username_var.get() or "default"
-       
-       # Prompt for server address
-       server_dialog = tk.Toplevel(root)
-       server_dialog.geometry("300x150")
-       server_dialog.title("Enter Server Address")
-       
-       server_label = tk.Label(server_dialog, text="Enter server address:", font=custom_font)
-       server_label.pack(pady=10)
-       
-       server_var = tk.StringVar()
-       server_entry = tk.Entry(server_dialog, textvariable=server_var, font=custom_font, width=20)
-       server_entry.pack(pady=5)
-       server_entry.focus_set()
-       
-       def on_server_ok():
-           server_dialog.destroy()
-       
-       ok_button = tk.Button(server_dialog, text="OK", command=on_server_ok, font=custom_font)
-       ok_button.pack(pady=10)
-       
-       root.wait_window(server_dialog)
-       
-       server_addr = server_var.get()
-       
-       return username, server_addr
-   
-   def main():
-       app = Ursina()
-   
-       username, server_addr = get_user_input()
-       
-       if server_addr:
-           network = Network(server_addr, 12345, username)  # Example port number
-           player = Player(position=Vec3(0, 1, 0), network=network)
-           app.run()
-       else:
-           print("Server address input was canceled or not completed correctly")
-   
-   if __name__ == "__main__":
-       main()
-   ```
+     block_cipher = None
 
-6. **Build the Executable**:
-   Run `PyInstaller` with the spec file:
+     a = Analysis(
+         ['server.py'],  # Replace 'server.py' with the actual name of your server script
+         pathex=['.'],
+         binaries=[],
+         datas=[],
+         hiddenimports=[],
+         hookspath=[],
+         hooksconfig={},
+         runtime_hooks=[],
+         excludes=[],
+         noarchive=False,
+         optimize=0,
+     )
+     pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
-   ```sh
-   pyinstaller mygame.spec
-   ```
+     exe = EXE(
+         pyz,
+         a.scripts,
+         [],
+         exclude_binaries=True,
+         name='myserver',  # Specify your server executable name here
+         debug=False,
+         bootloader_ignore_signals=False,
+         strip=False,
+         upx=True,
+         upx_exclude=[],
+         runtime_tmpdir=None,
+         console=True,  # Set to True to keep a console window open for server logging
+         disable_windowed_traceback=False,
+         argv_emulation=False,
+         target_arch=None,
+         codesign_identity=None,
+         entitlements_file=None,
+     )
+     ```
+     - Replace `'server.py'` with the actual filename of your server script if it differs.
 
-7. **Locate the Executable**:
-   The executable will be created in the `dist` directory inside your project folder.
+6. **Save `main.spec` File**:
 
-With this setup, your `main.py` script will prompt the user for input when the executable is run, and `PyInstaller` will package all required assets into the executable.
+   - Save the `main.spec` file in the same directory where your `server.py` script is located (`server_project`).
+
+7. **Run PyInstaller**:
+
+   - In your terminal or command prompt, while still in the `server_project` directory, run PyInstaller with your `main.spec` file:
+     ```
+     pyinstaller main.spec
+     ```
+
+8. **Build Process**:
+
+   - PyInstaller will start analyzing your script (`server.py`), resolving dependencies, and bundling everything into a standalone executable.
+
+9. **Locate Executable**:
+
+   - After the build completes successfully, navigate to the `dist` directory within your `server_project` directory. You should find your executable file named `myserver` (or `myserver.exe` on Windows).
+
+10. **Testing**:
+
+    - Run the generated executable (`myserver` or `myserver.exe`) to test your server application. It should start and listen for connections as configured in your `server.py` script.
+
+11. **Graceful Shutdown**:
+
+    - Ensure your server script handles exits gracefully, such as by catching `KeyboardInterrupt` (`Ctrl + C` in the terminal) to allow for clean shutdown of the server.
+
+By following these steps, you'll have successfully created a standalone executable for your server script using PyInstaller, making it easier to distribute and run your server application on different systems.
