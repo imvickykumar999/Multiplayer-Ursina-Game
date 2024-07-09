@@ -2,7 +2,7 @@ import os
 import sys
 import socket
 import threading
-from ursina import Ursina, InputField, Button, Entity, Vec3, destroy, held_keys, window
+from ursina import Ursina, InputField, Button, Entity, Vec3, destroy, held_keys, window, Text, camera, color
 from network import Network
 from floor import Floor
 from map import Map
@@ -12,8 +12,8 @@ from bullet import Bullet
 
 class MyGame:
     def __init__(self):
-        self.username = ""
-        self.server_addr = ""
+        self.username = "vicky"
+        self.server_addr = "127.0.0.1"
         self.server_port = 8000
         self.input_fields = []
         self.network = None
@@ -24,13 +24,20 @@ class MyGame:
 
         self.app = Ursina()
         self.create_input_fields()
-        self.submit_button = Button(text='Submit', scale=(.3, .1), position=(0, -0.4))
+        self.submit_button = Button(text='Submit', scale=(.3, .1), position=(0, -0.3), color=color.azure)
         self.submit_button.on_click = self.submit
 
     def create_input_fields(self):
-        self.username_field = InputField(default_value='vicky', position=(-0.3, 0.1), scale=(0.6, 0.1))
+        camera.ui.color = color.light_gray
+
+        self.username_label = Text(text="Username:", position=(-0.5, 0.1), origin=(0, 0), background=True)
+        self.username_label.background.color = color.clear
+        self.username_field = InputField(position=(0, 0.1), scale=(0.6, 0.1), color=color.white, origin=(0, 0))
         self.input_fields.append(self.username_field)
-        self.ip_field = InputField(default_value='127.0.0.1', position=(-0.3, -0.1), scale=(0.6, 0.1))
+
+        self.ip_label = Text(text="Server Address:", position=(-0.5, -0.1), origin=(0, 0), background=True)
+        self.ip_label.background.color = color.clear
+        self.ip_field = InputField(position=(0, -0.1), scale=(0.6, 0.1), color=color.white, origin=(0, 0))
         self.input_fields.append(self.ip_field)
 
     def submit(self):
@@ -40,6 +47,8 @@ class MyGame:
         for field in self.input_fields:
             field.enabled = False
         self.submit_button.enabled = False
+        self.username_label.enabled = False
+        self.ip_label.enabled = False
         self.start_game()
 
     def start_game(self):
