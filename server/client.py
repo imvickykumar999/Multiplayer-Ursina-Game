@@ -3,6 +3,7 @@ import sys
 import socket
 import threading
 from ursina import Ursina, InputField, Button, Entity, Vec3, destroy, held_keys, window, Text, camera, color
+
 from network import Network
 from floor import Floor
 from map import Map
@@ -12,8 +13,8 @@ from bullet import Bullet
 
 class MyGame:
     def __init__(self):
-        self.username = ""
-        self.server_addr = ""
+        self.username = "vicky"
+        self.server_addr = "127.0.0.1"
         self.server_port = 8000
         self.input_fields = []
         self.network = None
@@ -24,7 +25,7 @@ class MyGame:
 
         self.app = Ursina()
         self.create_input_fields()
-        self.submit_button = Button(text='Submit', scale=(.3, .1), position=(0, -0.3), color=color.azure)
+        self.submit_button = Button(text='Play', scale=(.3, .1), position=(0, -0.3), color=color.azure)
         self.submit_button.on_click = self.submit
 
     def create_input_fields(self):
@@ -177,10 +178,13 @@ class MyGame:
 
     def input(self, key):
         if key == "left mouse down" and self.player.health > 0:
-            b_pos = self.player.position + Vec3(0, 2, 0)
-            bullet = Bullet(b_pos, self.player.world_rotation_y, -self.player.camera_pivot.world_rotation_x, self.network)
-            self.network.send_bullet(bullet)
-            destroy(bullet, delay=2)
+            self.shoot()
+
+    def shoot(self):
+        b_pos = self.player.position + Vec3(0, 2, 0)
+        bullet = Bullet(b_pos, self.player.world_rotation_y, -self.player.camera_pivot.world_rotation_x, self.network)
+        self.network.send_bullet(bullet)
+        destroy(bullet, delay=2)
 
     def run(self):
         self.app.run()
