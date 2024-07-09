@@ -16,35 +16,59 @@ from tkinter import font
 def get_user_input():
     root = tk.Tk()
     root.attributes('-fullscreen', True)  # Make the window full-screen
-    custom_font = font.Font(family="Helvetica", size=14, weight="bold")
+
+    # Set custom font
+    custom_font = font.Font(family="Helvetica", size=28, weight="bold")
+
+    # Frame to hold all widgets
+    frame = tk.Frame(root)
+    frame.pack(expand=True)
 
     # Username entry
-    username_label = tk.Label(root, text="Enter your username:", font=custom_font)
-    username_label.pack(pady=10)
+    username_label = tk.Label(frame, text="Enter your username:", font=custom_font)
+    username_label.pack(pady=20)
 
     username_var = tk.StringVar()
-    username_entry = tk.Entry(root, textvariable=username_var, font=custom_font, width=20)
-    username_entry.pack(pady=5)
+    username_entry = tk.Entry(frame, textvariable=username_var, font=custom_font, width=20)
+    username_entry.pack(pady=10)
     username_entry.focus_set()
 
     # Server address entry
-    server_label = tk.Label(root, text="Enter server address:", font=custom_font)
-    server_label.pack(pady=10)
+    server_label = tk.Label(frame, text="Enter server address:", font=custom_font)
+    server_label.pack(pady=20)
 
     server_var = tk.StringVar()
-    server_entry = tk.Entry(root, textvariable=server_var, font=custom_font, width=20)
-    server_entry.pack(pady=5)
+    server_entry = tk.Entry(frame, textvariable=server_var, font=custom_font, width=20)
+    server_entry.pack(pady=10)
 
+    # OK button
     def on_ok():
         root.destroy()
 
-    ok_button = tk.Button(root, text="OK", command=on_ok, font=custom_font)
-    ok_button.pack(pady=10)
+    ok_button = tk.Button(frame, text="OK", command=on_ok, font=custom_font)
+    ok_button.pack(pady=20)
 
-    root.wait_window(root)
+    # Calculate screen dimensions
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+
+    # Calculate the position to center the window
+    root.update_idletasks()  # Ensure all widgets are updated and packed
+    window_width = root.winfo_width()
+    window_height = root.winfo_height()
+    x_position = (screen_width - window_width) // 2
+    y_position = (screen_height - window_height) // 2
+
+    # Set window position
+    root.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
+
+    # Start the Tkinter main loop
+    root.mainloop()
+
     username = username_var.get() or "default"
     server_addr = server_var.get()
     return username, server_addr
+
 
 server_port = 8000
 username, server_addr = get_user_input()
