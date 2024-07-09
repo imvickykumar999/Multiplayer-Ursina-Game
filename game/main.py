@@ -14,52 +14,35 @@ import tkinter as tk
 from tkinter import font
 
 def get_user_input():
-    # Use Tkinter to get user input for username and server address
     root = tk.Tk()
-    root.withdraw()
-
+    root.attributes('-fullscreen', True)  # Make the window full-screen
     custom_font = font.Font(family="Helvetica", size=14, weight="bold")
-    username_dialog = tk.Toplevel(root)
-    username_dialog.geometry("300x150")
-    username_dialog.title("Enter Username")
 
-    username_label = tk.Label(username_dialog, text="Enter your username:", font=custom_font)
+    # Username entry
+    username_label = tk.Label(root, text="Enter your username:", font=custom_font)
     username_label.pack(pady=10)
 
     username_var = tk.StringVar()
-    username_entry = tk.Entry(username_dialog, textvariable=username_var, font=custom_font, width=20)
+    username_entry = tk.Entry(root, textvariable=username_var, font=custom_font, width=20)
     username_entry.pack(pady=5)
     username_entry.focus_set()
 
-    def on_username_ok():
-        username_dialog.destroy()
-
-    ok_button = tk.Button(username_dialog, text="OK", command=on_username_ok, font=custom_font)
-    ok_button.pack(pady=10)
-
-    root.wait_window(username_dialog)
-    username = username_var.get() or "default"
-
-    # Prompt for server address
-    server_dialog = tk.Toplevel(root)
-    server_dialog.geometry("300x150")
-    server_dialog.title("Enter Server Address")
-
-    server_label = tk.Label(server_dialog, text="Enter server address:", font=custom_font)
+    # Server address entry
+    server_label = tk.Label(root, text="Enter server address:", font=custom_font)
     server_label.pack(pady=10)
 
     server_var = tk.StringVar()
-    server_entry = tk.Entry(server_dialog, textvariable=server_var, font=custom_font, width=20)
+    server_entry = tk.Entry(root, textvariable=server_var, font=custom_font, width=20)
     server_entry.pack(pady=5)
-    server_entry.focus_set()
 
-    def on_server_ok():
-        server_dialog.destroy()
+    def on_ok():
+        root.destroy()
 
-    ok_button = tk.Button(server_dialog, text="OK", command=on_server_ok, font=custom_font)
+    ok_button = tk.Button(root, text="OK", command=on_ok, font=custom_font)
     ok_button.pack(pady=10)
 
-    root.wait_window(server_dialog)
+    root.wait_window(root)
+    username = username_var.get() or "default"
     server_addr = server_var.get()
     return username, server_addr
 
@@ -97,7 +80,7 @@ while True:
     if not error_occurred:
         break
 
-app = ursina.Ursina()
+app = ursina.Ursina(fullscreen=True)
 ursina.window.borderless = False
 ursina.window.title = "Ursina FPS"
 ursina.window.exit_button.visible = False
