@@ -23,7 +23,7 @@ Create a file called `game_server.service` in `/etc/systemd/system/` with the fo
 Description=Game Server
 
 [Service]
-ExecStart=/usr/bin/python3 /path/to/your_server_script.py
+ExecStart=/usr/bin/python3 /home/newbol7/Documents/Multiplayer-Ursina-Game-main/server/main.py
 Restart=always
 User=nobody
 Group=nogroup
@@ -50,7 +50,7 @@ Edit the NGINX configuration to reverse proxy your game server. Create a new fil
 ```nginx
 server {
     listen 80;
-    server_name your_domain_or_ip;
+    server_name 127.0.0.1;
 
     location / {
         proxy_pass http://127.0.0.1:8000;
@@ -94,3 +94,30 @@ Ensure your Ursina game client connects to the correct server address, which wil
 - Consider securing your server with SSL/TLS by using a service like Let's Encrypt.
 
 By following these steps, your Ursina game should be accessible via the public IP or domain name, with NGINX handling the reverse proxy to your game server.
+
+---
+
+The folder `/etc/systemd/system/` is located at the root level of the file system on your Ubuntu laptop. Here are the steps to navigate to this folder:
+
+1. **Open a Terminal:**
+   - You can open a terminal window by pressing `Ctrl + Alt + T` on your keyboard.
+
+2. **Navigate to the Directory:**
+   - You can change to the `/etc/systemd/system/` directory by running the following command in the terminal:
+     ```bash
+     cd /etc/systemd/system/
+     ```
+
+3. **List the Contents:**
+   - To see the contents of the directory, you can use the `ls` command:
+     ```bash
+     ls
+     ```
+
+If you need to create or edit a file in this directory, you will typically need to use `sudo` to gain the necessary permissions. For example, to create or edit the `game_server.service` file, you can use a text editor like `nano`:
+
+```bash
+sudo nano /etc/systemd/system/game_server.service
+```
+
+This will open the file in the `nano` text editor with elevated permissions, allowing you to make the necessary changes. Once you're done, save the file by pressing `Ctrl + O`, and then exit `nano` by pressing `Ctrl + X`.
