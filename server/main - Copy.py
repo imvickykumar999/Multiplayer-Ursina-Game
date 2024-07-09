@@ -75,35 +75,7 @@ def handle_messages(identifier: str):
             players[identifier]["rotation"] = msg_json["rotation"]
             players[identifier]["health"] = msg_json["health"]
 
-            # Make player invisible if health is 0
-            if msg_json["health"] <= 0:
-                players[identifier]["visible"] = False
-            else:
-                players[identifier]["visible"] = True
-
-        elif msg_json["object"] == "respawn":
-            players[identifier]["position"] = msg_json["position"]
-            players[identifier]["health"] = msg_json["health"]
-            players[identifier]["visible"] = True
-
-            # Broadcast respawn event to other players
-            respawn_message = json.dumps({
-                "object": "player_respawn",
-                "id": identifier,
-                "position": players[identifier]["position"],
-                "health": players[identifier]["health"]
-            })
-
-            for player_id in players:
-                if player_id != identifier:
-                    player_info = players[player_id]
-                    player_conn: socket.socket = player_info["socket"]
-                    try:
-                        player_conn.sendall(respawn_message.encode("utf8"))
-                    except OSError:
-                        pass
-
-        # Tell other players about player moving or visibility change
+        # Tell other players about player moving
         for player_id in players:
             if player_id != identifier:
                 player_info = players[player_id]
@@ -141,7 +113,7 @@ def main():
         new_id = generate_id(players, MAX_PLAYERS)
         conn.send(new_id.encode("utf8"))
         username = conn.recv(MSG_SIZE).decode("utf8")
-        new_player_info = {"socket": conn, "username": username, "position": (0, 1, 0), "rotation": 0, "health": 100, "visible": True}
+        new_player_info = {"socket": conn, "username": username, "position": (0, 1, 0), "rotation": 0, "health": 100}
 
         # Tell existing players about new player
         for player_id in players:
