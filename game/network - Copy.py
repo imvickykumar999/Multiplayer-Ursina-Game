@@ -101,18 +101,3 @@ class Network:
             self.client.send(health_info_encoded)
         except socket.error as e:
             print(e)
-
-    def send_respawn(self, player: Player):
-        respawn_info = {
-            "object": "respawn",
-            "id": self.id,
-            "position": (player.world_x, player.world_y, player.world_z),
-            "health": player.health
-        }
-
-        respawn_info_encoded = json.dumps(respawn_info).encode("utf8")
-
-        try:
-            self.client.send(respawn_info_encoded)
-        except socket.error as e:
-            print(e)

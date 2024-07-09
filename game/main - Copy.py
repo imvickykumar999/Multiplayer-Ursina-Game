@@ -3,7 +3,6 @@ import sys
 import socket
 import threading
 import ursina
-from ursina import Vec3
 from network import Network
 from floor import Floor
 from map import Map
@@ -14,54 +13,56 @@ import tkinter as tk
 from tkinter import font
 
 def get_user_input():
-    # Use Tkinter to get user input for username and server address
     root = tk.Tk()
     root.withdraw()
-
+    
     custom_font = font.Font(family="Helvetica", size=14, weight="bold")
     username_dialog = tk.Toplevel(root)
     username_dialog.geometry("300x150")
     username_dialog.title("Enter Username")
-
+    
     username_label = tk.Label(username_dialog, text="Enter your username:", font=custom_font)
     username_label.pack(pady=10)
-
+    
     username_var = tk.StringVar()
     username_entry = tk.Entry(username_dialog, textvariable=username_var, font=custom_font, width=20)
     username_entry.pack(pady=5)
     username_entry.focus_set()
-
+    
     def on_username_ok():
         username_dialog.destroy()
-
+    
     ok_button = tk.Button(username_dialog, text="OK", command=on_username_ok, font=custom_font)
     ok_button.pack(pady=10)
-
+    
     root.wait_window(username_dialog)
     username = username_var.get() or "default"
-
+    
     # Prompt for server address
     server_dialog = tk.Toplevel(root)
     server_dialog.geometry("300x150")
     server_dialog.title("Enter Server Address")
-
+    
     server_label = tk.Label(server_dialog, text="Enter server address:", font=custom_font)
     server_label.pack(pady=10)
-
+    
     server_var = tk.StringVar()
     server_entry = tk.Entry(server_dialog, textvariable=server_var, font=custom_font, width=20)
     server_entry.pack(pady=5)
     server_entry.focus_set()
-
+    
     def on_server_ok():
         server_dialog.destroy()
-
+    
     ok_button = tk.Button(server_dialog, text="OK", command=on_server_ok, font=custom_font)
     ok_button.pack(pady=10)
-
+    
     root.wait_window(server_dialog)
     server_addr = server_var.get()
     return username, server_addr
+
+# username = input("Enter your username: ")
+# server_addr = input("Enter IPv4 address: ")
 
 server_port = 8000
 username, server_addr = get_user_input()
@@ -83,7 +84,7 @@ while True:
     try:
         n.connect()
     except ConnectionRefusedError:
-        print("\nConnection refused! This can be because server hasn't started or has reached its player limit.")
+        print("\nConnection refused! This can be because server hasn't started or has reached it's player limit.")
         error_occurred = True
     except socket.timeout:
         print("\nServer took too long to respond, please try again...")
@@ -111,7 +112,7 @@ sky = ursina.Entity(
     double_sided=True
 )
 
-network = Network(server_addr, server_port, username)
+network = Network(server_addr, server_port, username)  
 player = Player(ursina.Vec3(0, 1, 0), network)
 prev_pos = player.world_position
 prev_dir = player.world_rotation_y
@@ -181,13 +182,12 @@ def receive():
 
             enemy.health = info["health"]
 
-def respawn_player():
-    player.respawn()  # Use the respawn method of the Player class
-    n.send_respawn(player)  # Inform the server of the respawn
 
 def update():
     if ursina.held_keys['escape']:
         exit()
+        # ursina.mouse.locked = False
+        # ursina.mouse.visible = True
 
     if player.health > 0:
         global prev_pos, prev_dir
@@ -197,8 +197,7 @@ def update():
 
         prev_pos = player.world_position
         prev_dir = player.world_rotation_y
-    else:
-        respawn_player()  # Respawn the player when health is 0
+
 
 def input(key):
     if key == "left mouse down" and player.health > 0:
@@ -207,10 +206,12 @@ def input(key):
         n.send_bullet(bullet)
         ursina.destroy(bullet, delay=2)
 
+
 def main():
     msg_thread = threading.Thread(target=receive, daemon=True)
     msg_thread.start()
     app.run()
+
 
 if __name__ == "__main__":
     main()
