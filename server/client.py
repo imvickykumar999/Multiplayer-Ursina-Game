@@ -12,8 +12,8 @@ from bullet import Bullet
 
 class MyGame:
     def __init__(self):
-        self.username = "vicky"
-        self.server_addr = "127.0.0.1"
+        self.username = ""
+        self.server_addr = ""
         self.server_port = 8000
         self.input_fields = []
         self.network = None
@@ -32,12 +32,12 @@ class MyGame:
 
         self.username_label = Text(text="Username:", position=(-0.5, 0.1), origin=(0, 0), background=True)
         self.username_label.background.color = color.clear
-        self.username_field = InputField(position=(0, 0.1), scale=(0.6, 0.1), color=color.white, origin=(0, 0))
+        self.username_field = InputField(position=(0, 0.1), scale=(0.6, 0.1), color=color.black, origin=(0, 0))
         self.input_fields.append(self.username_field)
 
         self.ip_label = Text(text="Server Address:", position=(-0.5, -0.1), origin=(0, 0), background=True)
         self.ip_label.background.color = color.clear
-        self.ip_field = InputField(position=(0, -0.1), scale=(0.6, 0.1), color=color.white, origin=(0, 0))
+        self.ip_field = InputField(position=(0, -0.1), scale=(0.6, 0.1), color=color.black, origin=(0, 0))
         self.input_fields.append(self.ip_field)
 
     def submit(self):
