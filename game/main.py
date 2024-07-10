@@ -48,7 +48,7 @@ def get_user_input():
         root.destroy()
         exit()
 
-    ok_button = tk.Button(frame, text="OK", command=on_ok, font=custom_font, bg='green', fg='white')
+    ok_button = tk.Button(frame, text="Play", command=on_ok, font=custom_font, bg='green', fg='white')
     ok_button.pack(side=tk.LEFT, padx=10)
 
     close_button = tk.Button(frame, text="Close", command=on_close, font=custom_font, bg='red', fg='white')
