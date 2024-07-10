@@ -14,16 +14,12 @@ from tkinter import font
 
 def get_user_input():
     root = tk.Tk()
-    root.attributes('-fullscreen', True)  # Make the window full-screen
-
-    # Set custom font
+    root.attributes('-fullscreen', True)
     custom_font = font.Font(family="Helvetica", size=28, weight="bold")
 
-    # Frame to hold all widgets
     frame = tk.Frame(root)
     frame.pack(expand=True)
 
-    # Username entry
     username_label = tk.Label(frame, text="Enter your username:", font=custom_font)
     username_label.pack(pady=20)
 
@@ -32,15 +28,13 @@ def get_user_input():
     username_entry.pack(pady=10)
     username_entry.focus_set()
 
-    # Server address entry
     server_label = tk.Label(frame, text="Enter server address:", font=custom_font)
     server_label.pack(pady=20)
 
     server_var = tk.StringVar()
     server_entry = tk.Entry(frame, textvariable=server_var, font=custom_font, width=20)
-    server_entry.pack(pady=(10, 50))  # Add padding to the bottom
+    server_entry.pack(pady=(10, 50))
 
-    # OK button
     def on_ok():
         root.destroy()
 
@@ -54,27 +48,21 @@ def get_user_input():
     close_button = tk.Button(frame, text="Close", command=on_close, font=custom_font, bg='red', fg='white')
     close_button.pack(side=tk.RIGHT, padx=10)
 
-    # Calculate screen dimensions
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
 
-    # Calculate the position to center the window
-    root.update_idletasks()  # Ensure all widgets are updated and packed
+    root.update_idletasks()
     window_width = root.winfo_width()
     window_height = root.winfo_height()
     x_position = (screen_width - window_width) // 2
     y_position = (screen_height - window_height) // 2
 
-    # Set window position
     root.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
-
-    # Start the Tkinter main loop
     root.mainloop()
 
     username = username_var.get() or "default"
     server_addr = server_var.get()
     return username, server_addr
-
 
 server_port = 8000
 username, server_addr = get_user_input()
@@ -96,7 +84,7 @@ while True:
     try:
         n.connect()
     except ConnectionRefusedError:
-        print("\nConnection refused! This can be because server hasn't started or has reached its player limit.")
+        print("\nConnection refused! This can be because server hasn't started or has reached it's player limit.")
         error_occurred = True
     except socket.timeout:
         print("\nServer took too long to respond, please try again...")
@@ -124,7 +112,7 @@ sky = ursina.Entity(
     double_sided=True
 )
 
-network = Network(server_addr, server_port, username)
+network = Network(server_addr, server_port, username)  
 player = Player(ursina.Vec3(0, 1, 0), network)
 prev_pos = player.world_position
 prev_dir = player.world_rotation_y
@@ -194,13 +182,12 @@ def receive():
 
             enemy.health = info["health"]
 
-def respawn_player():
-    player.respawn()  # Use the respawn method of the Player class
-    n.send_respawn(player)  # Inform the server of the respawn
 
 def update():
     if ursina.held_keys['escape']:
         exit()
+        # ursina.mouse.locked = False
+        # ursina.mouse.visible = True
 
     if player.health > 0:
         global prev_pos, prev_dir
@@ -210,8 +197,7 @@ def update():
 
         prev_pos = player.world_position
         prev_dir = player.world_rotation_y
-    else:
-        respawn_player()  # Respawn the player when health is 0
+
 
 def input(key):
     if key == "left mouse down" and player.health > 0:
@@ -220,10 +206,12 @@ def input(key):
         n.send_bullet(bullet)
         ursina.destroy(bullet, delay=2)
 
+
 def main():
     msg_thread = threading.Thread(target=receive, daemon=True)
     msg_thread.start()
     app.run()
+
 
 if __name__ == "__main__":
     main()

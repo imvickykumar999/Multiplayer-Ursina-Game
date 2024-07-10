@@ -4,7 +4,7 @@ from bullet import Bullet
 
 
 class Player(FirstPersonController):
-    def __init__(self, position: ursina.Vec3, network, max_health=100):
+    def __init__(self, position: ursina.Vec3, network):
         super().__init__(
             position=position,
             model="cube",
@@ -43,8 +43,7 @@ class Player(FirstPersonController):
             scale=self.healthbar_size
         )
 
-        self.max_health = max_health
-        self.health = self.max_health
+        self.health = 100
         self.network = network
         self.gun_sound = ursina.Audio('assets/bullet.mp3', autoplay=False)
         self.death_message_shown = False
@@ -59,33 +58,13 @@ class Player(FirstPersonController):
         self.cursor.color = ursina.color.rgba(0, 0, 0, a=0)
 
         ursina.Text(
-            text="You are dead!",
+            text="Press ESC to exit",
             origin=ursina.Vec2(0, 0),
             scale=3
         )
 
         ursina.mouse.locked = False
         ursina.mouse.visible = True
-
-    def respawn(self):
-        self.health = self.max_health
-        self.world_position = ursina.Vec3(0, 1, 0)  # Reset position to a spawn point
-        self.cursor.color = ursina.color.rgba(255, 0, 0, 122)
-        self.death_message_shown = False
-
-        # Re-create the gun entity
-        self.gun = ursina.Entity(
-            parent=ursina.camera.ui,
-            position=ursina.Vec2(0.6, -0.45),
-            scale=ursina.Vec3(0.1, 0.2, 0.65),
-            rotation=ursina.Vec3(-20, -20, -5),
-            model="cube",
-            texture="white_cube",
-            color=ursina.color.color(0, 0, 0.4)
-        )
-
-        ursina.mouse.locked = True
-        ursina.mouse.visible = False
 
     def update(self):
         self.healthbar.scale_x = self.health / 100 * self.healthbar_size.x
