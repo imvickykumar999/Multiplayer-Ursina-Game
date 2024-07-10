@@ -2,6 +2,7 @@
 
         A small FPS game made in Python 3 using the Ursina Engine.
 
+![image](https://github.com/imvickykumar999/Multiplayer-Ursina-Game/assets/50515418/a9100be6-c586-497a-8c74-f3ac825faa4f)
 ![image](https://github.com/imvickykumar999/Multiplayer-Ursina-Game/assets/50515418/fa97c0d4-47b8-402a-abb9-daa494caa11a)
 ![image](https://github.com/imvickykumar999/Multiplayer-Ursina-Game/assets/50515418/817db5d8-b8e3-4b68-b471-64fd4158b3bb)
 
