@@ -182,12 +182,9 @@ def receive():
 
             enemy.health = info["health"]
 
-
 def update():
     if ursina.held_keys['escape']:
         exit()
-        # ursina.mouse.locked = False
-        # ursina.mouse.visible = True
 
     if player.health > 0:
         global prev_pos, prev_dir
@@ -198,7 +195,6 @@ def update():
         prev_pos = player.world_position
         prev_dir = player.world_rotation_y
 
-
 def input(key):
     if key == "left mouse down" and player.health > 0:
         b_pos = player.position + ursina.Vec3(0, 2, 0)
@@ -206,12 +202,10 @@ def input(key):
         n.send_bullet(bullet)
         ursina.destroy(bullet, delay=2)
 
-
 def main():
     msg_thread = threading.Thread(target=receive, daemon=True)
     msg_thread.start()
     app.run()
-
 
 if __name__ == "__main__":
     main()
