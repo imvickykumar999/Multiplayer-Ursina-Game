@@ -11,12 +11,6 @@ Playing the game
 
 Install the dependencies with `pip install -r requirements.txt` and do `python3 game/main.py` to run the game.
 
-For example: (use `ipconfig` command to know your server IP)
-
-        Enter your username: imvickykumar999
-        Enter server IP: 192.168.0.104
-        Enter server port: 8000
-
 ## Running the server
 The server does not have any dependencies. To run it, simple run the `server/main.py` file.
 
