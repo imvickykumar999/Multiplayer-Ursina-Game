@@ -3,7 +3,6 @@ import sys
 import socket
 import threading
 import ursina
-from ursina import Vec3
 from network import Network
 from floor import Floor
 from map import Map
@@ -39,14 +38,21 @@ def get_user_input():
 
     server_var = tk.StringVar()
     server_entry = tk.Entry(frame, textvariable=server_var, font=custom_font, width=20)
-    server_entry.pack(pady=10)
+    server_entry.pack(pady=(10, 50))  # Add padding to the bottom
 
     # OK button
     def on_ok():
         root.destroy()
 
-    ok_button = tk.Button(frame, text="OK", command=on_ok, font=custom_font)
-    ok_button.pack(pady=20)
+    def on_close():
+        root.destroy()
+        exit()
+
+    ok_button = tk.Button(frame, text="OK", command=on_ok, font=custom_font, bg='green', fg='white')
+    ok_button.pack(side=tk.LEFT, padx=10)
+
+    close_button = tk.Button(frame, text="Close", command=on_close, font=custom_font, bg='red', fg='white')
+    close_button.pack(side=tk.RIGHT, padx=10)
 
     # Calculate screen dimensions
     screen_width = root.winfo_screenwidth()
