@@ -1,1 +1,1 @@
-![image](https://github.com/imvickykumar999/Multiplayer-Ursina-Game/assets/50515418/7046165f-4577-4586-8065-6da183cfb288)
+![image](https://github.com/imvickykumar999/Multiplayer-Ursina-Game/assets/50515418/d0509b13-844b-4747-8c0d-73fed1436153)
