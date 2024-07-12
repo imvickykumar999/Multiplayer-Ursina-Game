@@ -1,1 +1,3 @@
 ursina
+scapy
+psutil

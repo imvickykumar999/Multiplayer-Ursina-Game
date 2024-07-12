@@ -3,14 +3,24 @@ import sys
 import socket
 import threading
 import ursina
+
 from network import Network
 from floor import Floor
 from map import Map
 from player import Player
 from enemy import Enemy
 from bullet import Bullet
+
 import tkinter as tk
-from tkinter import font
+from tkinter import font, ttk
+import psutil
+
+def get_connected_devices():
+    ip_addresses = []
+    for conn in psutil.net_connections(kind='inet'):
+        if conn.raddr and conn.laddr.ip.startswith('192.168.0.'):
+            ip_addresses.append(conn.raddr.ip)
+    return list(set(ip_addresses))
 
 def get_user_input():
     root = tk.Tk()
@@ -23,7 +33,7 @@ def get_user_input():
     username_label = tk.Label(frame, text="Enter your username:", font=custom_font)
     username_label.pack(pady=20)
 
-    username_var = tk.StringVar()
+    username_var = tk.StringVar(value="default")
     username_entry = tk.Entry(frame, textvariable=username_var, font=custom_font, width=20)
     username_entry.pack(pady=10)
     username_entry.focus_set()
@@ -31,9 +41,10 @@ def get_user_input():
     server_label = tk.Label(frame, text="Enter server address:", font=custom_font)
     server_label.pack(pady=20)
 
-    server_var = tk.StringVar()
-    server_entry = tk.Entry(frame, textvariable=server_var, font=custom_font, width=20)
-    server_entry.pack(pady=(10, 50))
+    server_var = tk.StringVar(value="192.168.0.")
+    ip_addresses = get_connected_devices()
+    server_combobox = ttk.Combobox(frame, textvariable=server_var, values=ip_addresses, font=custom_font, width=20)
+    server_combobox.pack(pady=(10, 50))
 
     def on_ok():
         root.destroy()
@@ -58,17 +69,15 @@ def get_user_input():
     y_position = (screen_height - window_height) // 2
 
     root.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
+    root.bind('<Return>', lambda event: on_ok())
     root.mainloop()
 
-    username = username_var.get() or "default"
+    username = username_var.get()
     server_addr = server_var.get()
     return username, server_addr
 
 server_port = 8000
 username, server_addr = get_user_input()
-
-print()
-print(username, server_addr)
 
 while True:
     try:
