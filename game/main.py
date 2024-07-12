@@ -25,26 +25,34 @@ def get_connected_devices():
 def get_user_input():
     root = tk.Tk()
     root.attributes('-fullscreen', True)
+
     custom_font = font.Font(family="Helvetica", size=28, weight="bold")
+    input_font = font.Font(family="Arial", size=20, weight="normal")
+    title_font = font.Font(family="Helvetica", size=35, weight="bold")
+
+    exit_label = tk.Label(root, text="\nWelcome to Multiplayer Shooting Game", font=title_font, fg='blue')
+    exit_label.pack(side=tk.TOP)
 
     frame = tk.Frame(root)
     frame.pack(expand=True)
 
-    username_label = tk.Label(frame, text="Enter your username:", font=custom_font)
+    username_label = tk.Label(frame, text="Enter your username:", font=custom_font, fg='red')
     username_label.pack(pady=20)
 
-    username_var = tk.StringVar(value="default")
-    username_entry = tk.Entry(frame, textvariable=username_var, font=custom_font, width=20)
+    username_var = tk.StringVar(value="Default")
+    username_entry = tk.Entry(frame, textvariable=username_var, font=input_font, width=20, justify='center')
     username_entry.pack(pady=10)
-    username_entry.focus_set()
 
-    server_label = tk.Label(frame, text="Enter server address:", font=custom_font)
+    server_label = tk.Label(frame, text="Enter server address:", font=custom_font, fg='green')
     server_label.pack(pady=20)
 
     server_var = tk.StringVar(value="192.168.0.")
     ip_addresses = get_connected_devices()
-    server_combobox = ttk.Combobox(frame, textvariable=server_var, values=ip_addresses, font=custom_font, width=20)
+    server_combobox = ttk.Combobox(frame, textvariable=server_var, values=ip_addresses, font=input_font, width=20, justify='center')
     server_combobox.pack(pady=(10, 50))
+
+    server_combobox.focus_set()
+    server_combobox.icursor(tk.END)
 
     def on_ok():
         root.destroy()
@@ -53,11 +61,14 @@ def get_user_input():
         root.destroy()
         exit()
 
-    ok_button = tk.Button(frame, text="Play", command=on_ok, font=custom_font, bg='green', fg='white')
+    ok_button = tk.Button(frame, text="Play", command=on_ok, font=input_font, bg='green', fg='white')
     ok_button.pack(side=tk.LEFT, padx=10)
 
-    close_button = tk.Button(frame, text="Close", command=on_close, font=custom_font, bg='red', fg='white')
+    close_button = tk.Button(frame, text="Close", command=on_close, font=input_font, bg='red', fg='white')
     close_button.pack(side=tk.RIGHT, padx=10)
+
+    exit_label = tk.Label(root, text="Note : Press ESC to exit in Game\n", font=input_font)
+    exit_label.pack(side=tk.BOTTOM)
 
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
@@ -70,6 +81,7 @@ def get_user_input():
 
     root.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
     root.bind('<Return>', lambda event: on_ok())
+    root.bind('<Escape>', lambda event: on_close())
     root.mainloop()
 
     username = username_var.get()
