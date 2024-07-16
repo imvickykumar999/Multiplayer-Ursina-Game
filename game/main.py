@@ -19,6 +19,7 @@ import tkinter as tk
 from tkinter import font, ttk
 from PIL import Image, ImageTk
 import psutil
+import pygame
 
 def get_connected_devices():
     ip_addresses = []
@@ -84,8 +85,12 @@ def get_user_input():
 
     root.bind('<Return>', lambda event: on_ok())
     root.bind('<Escape>', lambda event: on_close())
-    root.mainloop()
+    
+    pygame.mixer.init()
+    pygame.mixer.music.load("assets/music.mp3")
+    pygame.mixer.music.play(-1)  # -1 means loop indefinitely
 
+    root.mainloop()
     username = username_var.get()
     server_addr = server_var.get()
     return username, server_addr
