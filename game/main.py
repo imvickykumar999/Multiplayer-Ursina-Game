@@ -10,9 +10,14 @@ from map import Map
 from player import Player
 from enemy import Enemy
 from bullet import Bullet
+import tkinter as tk
+from tkinter import font, ttk
+from PIL import Image, ImageTk
+import psutil
 
 import tkinter as tk
 from tkinter import font, ttk
+from PIL import Image, ImageTk
 import psutil
 
 def get_connected_devices():
@@ -26,24 +31,34 @@ def get_user_input():
     root = tk.Tk()
     root.attributes('-fullscreen', True)
 
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+
+    # Load and resize the background image
+    bg_image = Image.open("assets/background.jpg")
+    bg_image = bg_image.resize((screen_width, screen_height), Image.LANCZOS)
+    bg_photo = ImageTk.PhotoImage(bg_image)
+
+    # Create a canvas to hold the background image
+    canvas = tk.Canvas(root, width=screen_width, height=screen_height)
+    canvas.pack(fill='both', expand=True)
+    canvas.create_image(0, 0, image=bg_photo, anchor='nw')
+
     custom_font = font.Font(family="Helvetica", size=28, weight="bold")
     input_font = font.Font(family="Arial", size=20, weight="normal")
     title_font = font.Font(family="Helvetica", size=35, weight="bold")
 
-    exit_label = tk.Label(root, text="\nWelcome to Multiplayer Shooting Game", font=title_font, fg='blue')
-    exit_label.pack(side=tk.TOP)
+    frame = tk.Frame(root, bg='#010d25')
+    canvas.create_window(screen_width // 2, screen_height // 2, window=frame, anchor='center')
 
-    frame = tk.Frame(root)
-    frame.pack(expand=True)
-
-    username_label = tk.Label(frame, text="Enter your username:", font=custom_font, fg='red')
+    username_label = tk.Label(frame, text="Enter your username:", font=custom_font, fg='lightblue', bg='#010d25')
     username_label.pack(pady=20)
 
     username_var = tk.StringVar(value="Default")
     username_entry = tk.Entry(frame, textvariable=username_var, font=input_font, width=20, justify='center')
     username_entry.pack(pady=10)
 
-    server_label = tk.Label(frame, text="Enter server address:", font=custom_font, fg='green')
+    server_label = tk.Label(frame, text="Enter server address:", font=custom_font, fg='lightblue', bg='#010d25')
     server_label.pack(pady=20)
 
     server_var = tk.StringVar(value="192.168.0.")
@@ -67,19 +82,6 @@ def get_user_input():
     close_button = tk.Button(frame, text="Close", command=on_close, font=input_font, bg='red', fg='white')
     close_button.pack(side=tk.RIGHT, padx=10)
 
-    exit_label = tk.Label(root, text="Note : Press ESC to exit in Game\n", font=input_font)
-    exit_label.pack(side=tk.BOTTOM)
-
-    screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight()
-
-    root.update_idletasks()
-    window_width = root.winfo_width()
-    window_height = root.winfo_height()
-    x_position = (screen_width - window_width) // 2
-    y_position = (screen_height - window_height) // 2
-
-    root.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
     root.bind('<Return>', lambda event: on_ok())
     root.bind('<Escape>', lambda event: on_close())
     root.mainloop()
