@@ -2,12 +2,12 @@
 
     pip install pyinstaller pyarmor
     pyarmor gen -O dist main.py
-    pyinstaller --onefile --hidden-import=json --icon=icon.ico dist/main.py
+    pyinstaller --onefile --hidden-import=art --hidden-import=json --icon=icon.ico main.py
 
+    cd dist
+    file main
+    chmod +x main
+    ./main
+
+![image](https://github.com/user-attachments/assets/9e781451-001b-4e54-877b-39038873a553)
 ![image](https://github.com/user-attachments/assets/4d259b58-59d4-4804-a048-8424e3258a59)
-
----
-
-IDEA : https://github.com/imvickykumar999/art?tab=readme-ov-file#2-random
-
-![image](https://github.com/user-attachments/assets/a6048565-e974-40f2-a75e-8f5db4e23048)
