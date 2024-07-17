@@ -7,9 +7,10 @@ import json
 import time
 import random
 import threading
+from art import *
 
 ADDR = "0.0.0.0"
-PORT = 8000
+PORT = 5000
 MAX_PLAYERS = 10
 MSG_SIZE = 2048
 
@@ -19,7 +20,6 @@ s.bind((ADDR, PORT))
 s.listen(MAX_PLAYERS)
 
 players = {}
-
 
 def generate_id(player_list: dict, max_players: int):
     """
@@ -133,7 +133,8 @@ def main():
     server_addr = socket.gethostbyname(hostname)
 
     print("\nServer started, listening for new connections...")
-    print(f'IPV4 Address = {server_addr}')
+    print(f'IPV4 Address = {server_addr}\n')
+    tprint(server_addr)
 
     while True:
         # Accept new connection and assign unique ID
