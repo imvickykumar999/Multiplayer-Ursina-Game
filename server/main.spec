@@ -2,11 +2,11 @@
 
 
 a = Analysis(
-    ['dist\\main.py'],
+    ['main.py'],
     pathex=[],
     binaries=[],
     datas=[],
-    hiddenimports=['json'],
+    hiddenimports=['art', 'json'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],

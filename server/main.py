@@ -10,7 +10,7 @@ import threading
 from art import *
 
 ADDR = "0.0.0.0"
-PORT = 8000 # better if, import PORT from .env file
+PORT = 8000
 MAX_PLAYERS = 10
 MSG_SIZE = 2048
 
