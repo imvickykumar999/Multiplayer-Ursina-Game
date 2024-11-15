@@ -50,7 +50,7 @@ def get_live_chat_messages(video_id):
             part='snippet,authorDetails'
         ).execute()
 
-        for item in chat_response['items']:
+        for item in [chat_response['items'][-1]]:
             author = item['authorDetails']['displayName']
             message = item['snippet']['displayMessage']
             print(f"{author}: {message}")
@@ -62,4 +62,4 @@ def get_live_chat_messages(video_id):
         time.sleep(5)
 
 # Replace with your live video ID
-get_live_chat_messages('Mvr4NQF0IuQ')
+get_live_chat_messages('U9r50MpVVkQ')
