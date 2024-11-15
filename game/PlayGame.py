@@ -22,7 +22,7 @@ def press_key(comment):
     if normalized_comment in key_map:
         key = key_map[normalized_comment]
         keyboard.press(key)
-        keyboard.release(key)
+        # keyboard.release(key)
         print(f"Pressed key: {key}")
 
 def get_live_chat_messages(video_id):
@@ -62,4 +62,4 @@ def get_live_chat_messages(video_id):
         time.sleep(5)
 
 # Replace with your live video ID
-get_live_chat_messages('U9r50MpVVkQ')
+get_live_chat_messages('Mvr4NQF0IuQ')
