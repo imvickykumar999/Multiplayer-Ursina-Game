@@ -8,10 +8,14 @@ class Enemy(ursina.Entity):
             model="cube",
             origin_y=-0.5,
             collider="box",
-            texture="white_cube",
+            texture="assets/DP.jpg", #"white_cube",
             color=ursina.color.color(0, 0, 1),
             scale=ursina.Vec3(1, 2, 1)
         )
+
+        if hasattr(self, 'model_entity'):
+            self.model_entity.uvs = [ursina.Vec2(1 - uv[0], uv[1]) for uv in self.model_entity.uvs]
+            self.model_entity.generate()
 
         self.gun = ursina.Entity(
             parent=self,

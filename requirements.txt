@@ -2,3 +2,6 @@ ursina
 scapy
 psutil
 pygame
+art
+google-api-python-client
+pynput

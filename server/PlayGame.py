@@ -26,7 +26,7 @@ def press_key(comment):
         print(f"Pressed key: {key}")
 
 def get_live_chat_messages(video_id):
-    youtube = build('youtube', 'v3', developerKey='AIzaSyCcJX4qdbo9caqxZSKDmuBjNVWfvq8_Wcs')
+    youtube = build('youtube', 'v3', developerKey='go to secret.txt')
 
     video_response = youtube.videos().list(
         part='liveStreamingDetails',
