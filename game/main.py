@@ -56,7 +56,7 @@ def get_user_input():
     server_label = tk.Label(frame, text="Enter server address:", font=custom_font, fg='lightblue', bg='#010d25')
     server_label.pack(pady=20)
 
-    server_var = tk.StringVar(value="provided-stayed.gl.at.ply.gg")
+    server_var = tk.StringVar(value="card-http.gl.at.ply.gg")
     ip_addresses = get_connected_devices()
     server_combobox = ttk.Combobox(frame, textvariable=server_var, values=ip_addresses, font=input_font, width=25, justify='center')
     server_combobox.pack(pady=(10, 50))
@@ -80,16 +80,19 @@ def get_user_input():
     root.bind('<Return>', lambda event: on_ok())
     root.bind('<Escape>', lambda event: on_close())
     
-    pygame.mixer.init()
-    pygame.mixer.music.load("assets/music.mp3")
-    pygame.mixer.music.play(-1)  # -1 means loop indefinitely
+    try:
+        pygame.mixer.init()
+        pygame.mixer.music.load("assets/music.mp3")
+        pygame.mixer.music.play(-1)
+    except pygame.error as e:
+        print(f"[WARNING] Audio initialization failed: {e}")
 
     root.mainloop()
     username = username_var.get()
     server_addr = server_var.get()
     return username, server_addr
 
-server_port = 65002
+server_port = 65037
 username, server_addr = get_user_input()
 
 while True:
