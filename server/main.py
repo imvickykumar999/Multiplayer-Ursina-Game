@@ -10,7 +10,7 @@ import threading
 from art import *
 
 ADDR = "0.0.0.0"
-PORT = 8000
+PORT = 8080
 MAX_PLAYERS = 10
 MSG_SIZE = 2048
 
@@ -141,7 +141,14 @@ def main():
         conn, addr = s.accept()
         new_id = generate_id(players, MAX_PLAYERS)
         conn.send(new_id.encode("utf8"))
-        username = conn.recv(MSG_SIZE).decode("utf8")
+
+        try:
+            username = conn.recv(MSG_SIZE).decode("utf8")
+        except UnicodeDecodeError as e:
+            print(f"Failed to decode username: {e}")
+            conn.close()
+            continue
+
         new_player_info = {"socket": conn, "username": username, "position": (0, 1, 0), "rotation": 0, "health": 100, "visible": True}
 
         # Tell existing players about new player
