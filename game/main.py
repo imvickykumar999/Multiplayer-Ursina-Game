@@ -50,7 +50,7 @@ def get_user_input():
     username_label.pack(pady=20)
 
     username_var = tk.StringVar(value="Default")
-    username_entry = tk.Entry(frame, textvariable=username_var, font=input_font, width=20, justify='center')
+    username_entry = tk.Entry(frame, textvariable=username_var, font=input_font, width=25, justify='center')
     username_entry.pack(pady=10)
 
     server_label = tk.Label(frame, text="Enter server address:", font=custom_font, fg='lightblue', bg='#010d25')
@@ -58,7 +58,7 @@ def get_user_input():
 
     server_var = tk.StringVar(value="provided-stayed.gl.at.ply.gg")
     ip_addresses = get_connected_devices()
-    server_combobox = ttk.Combobox(frame, textvariable=server_var, values=ip_addresses, font=input_font, width=20, justify='center')
+    server_combobox = ttk.Combobox(frame, textvariable=server_var, values=ip_addresses, font=input_font, width=25, justify='center')
     server_combobox.pack(pady=(10, 50))
 
     server_combobox.focus_set()
