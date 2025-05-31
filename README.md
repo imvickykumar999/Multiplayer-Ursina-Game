@@ -3,8 +3,8 @@
         Multiplayer game made in Python 3 using the Ursina Engine.
         https://www.youtube.com/watch?v=SmKyZfUyXuA
         
-![image](https://github.com/user-attachments/assets/f487ce15-1f06-41a9-84a5-90bc97d79f59)
-![image](https://github.com/imvickykumar999/Multiplayer-Ursina-Game/assets/50515418/fa97c0d4-47b8-402a-abb9-daa494caa11a)
+![image](https://github.com/user-attachments/assets/ed2666d4-f3c5-414e-ac91-ae3415d122d2)
+![image](https://github.com/user-attachments/assets/a09c1895-5d4a-49d8-b327-ec985fa8ad5d)
 ![image](https://github.com/imvickykumar999/Multiplayer-Ursina-Game/assets/50515418/817db5d8-b8e3-4b68-b471-64fd4158b3bb)
 
 ## Running the server
