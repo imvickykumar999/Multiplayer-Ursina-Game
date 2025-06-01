@@ -3,7 +3,7 @@
         Multiplayer game made in Python 3 using the Ursina Engine.
         https://www.youtube.com/watch?v=SmKyZfUyXuA
 
-![image](https://github.com/user-attachments/assets/3dfcd08e-97b0-4d21-8780-a86eb6b94466)
+![WhatsApp Image 2025-06-01 at 12 20 11_12e2a83a](https://github.com/user-attachments/assets/92f62308-d848-468c-a56c-e10e9e079fe1)
 
 ## Running the server
 The server does not have any dependencies. To run it, simple run the `server/main.py` file.
