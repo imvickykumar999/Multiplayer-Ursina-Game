@@ -15,6 +15,22 @@ from PIL import Image, ImageTk
 import psutil
 import pygame
 
+# from tkinter import filedialog
+
+# # Add this inside get_user_input(), near where your frame and buttons are defined
+# dp_path_var = tk.StringVar(value="assets/DP.jpg")  # default
+
+# def choose_photo():
+#     path = filedialog.askopenfilename(
+#         title="Select Your Display Picture",
+#         filetypes=[("Image Files", "*.jpg *.png *.jpeg *.bmp")]
+#     )
+#     if path:
+#         dp_path_var.set(path)
+
+# photo_button = tk.Button(frame, text="Choose DP", command=choose_photo, font=input_font, bg='blue', fg='white')
+# photo_button.pack(pady=(0, 30))
+
 def get_connected_devices():
     ip_addresses = []
     for conn in psutil.net_connections(kind='inet'):
@@ -72,10 +88,10 @@ def get_user_input():
         exit()
 
     ok_button = tk.Button(frame, text="Play", command=on_ok, font=input_font, bg='green', fg='white')
-    ok_button.pack(side=tk.LEFT, padx=10)
+    ok_button.pack(side=tk.RIGHT, padx=10)
 
     close_button = tk.Button(frame, text="Close", command=on_close, font=input_font, bg='red', fg='white')
-    close_button.pack(side=tk.RIGHT, padx=10)
+    close_button.pack(side=tk.LEFT, padx=10)
 
     root.bind('<Return>', lambda event: on_ok())
     root.bind('<Escape>', lambda event: on_close())
