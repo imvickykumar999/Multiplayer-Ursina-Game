@@ -15,22 +15,6 @@ from PIL import Image, ImageTk
 import psutil
 import pygame
 
-# from tkinter import filedialog
-
-# # Add this inside get_user_input(), near where your frame and buttons are defined
-# dp_path_var = tk.StringVar(value="assets/DP.jpg")  # default
-
-# def choose_photo():
-#     path = filedialog.askopenfilename(
-#         title="Select Your Display Picture",
-#         filetypes=[("Image Files", "*.jpg *.png *.jpeg *.bmp")]
-#     )
-#     if path:
-#         dp_path_var.set(path)
-
-# photo_button = tk.Button(frame, text="Choose DP", command=choose_photo, font=input_font, bg='blue', fg='white')
-# photo_button.pack(pady=(0, 30))
-
 def get_connected_devices():
     ip_addresses = []
     for conn in psutil.net_connections(kind='inet'):
@@ -69,13 +53,22 @@ def get_user_input():
     username_entry = tk.Entry(frame, textvariable=username_var, font=input_font, width=25, justify='center')
     username_entry.pack(pady=10)
 
+    # Server IP
     server_label = tk.Label(frame, text="Enter server address:", font=custom_font, fg='lightblue', bg='#010d25')
-    server_label.pack(pady=20)
+    server_label.pack(pady=(20, 10))
 
     server_var = tk.StringVar(value="vicks.imvickykumar999.online")
     ip_addresses = get_connected_devices()
     server_combobox = ttk.Combobox(frame, textvariable=server_var, values=ip_addresses, font=input_font, width=25, justify='center')
-    server_combobox.pack(pady=(10, 50))
+    server_combobox.pack(pady=(0, 20))
+
+    # Server Port
+    port_label = tk.Label(frame, text="Enter port number:", font=custom_font, fg='lightblue', bg='#010d25')
+    port_label.pack(pady=(0, 10))
+
+    port_var = tk.StringVar(value="65037")
+    port_entry = tk.Entry(frame, textvariable=port_var, font=input_font, width=25, justify='center')
+    port_entry.pack(pady=(0, 30))
 
     server_combobox.focus_set()
     server_combobox.icursor(tk.END)
@@ -106,10 +99,9 @@ def get_user_input():
     root.mainloop()
     username = username_var.get()
     server_addr = server_var.get()
-    return username, server_addr
+    return username, server_addr, int(port_var.get())
 
-server_port = 65037
-username, server_addr = get_user_input()
+username, server_addr, server_port = get_user_input()
 
 while True:
     try:
