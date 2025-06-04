@@ -94,7 +94,7 @@ def handle_messages(identifier: str):
                 "health": players[identifier]["health"]
             })
 
-            for player_id in players:
+            for player_id in list(players):
                 if player_id != identifier:
                     player_info = players[player_id]
                     player_conn: socket.socket = player_info["socket"]
@@ -104,7 +104,7 @@ def handle_messages(identifier: str):
                         pass
 
         # Tell other players about player moving or visibility change
-        for player_id in players:
+        for player_id in list(players):
             if player_id != identifier:
                 player_info = players[player_id]
                 player_conn: socket.socket = player_info["socket"]
@@ -114,7 +114,7 @@ def handle_messages(identifier: str):
                     pass
 
     # Tell other players about player leaving
-    for player_id in players:
+    for player_id in list(players):
         if player_id != identifier:
             player_info = players[player_id]
             player_conn: socket.socket = player_info["socket"]
@@ -152,7 +152,7 @@ def main():
         new_player_info = {"socket": conn, "username": username, "position": (0, 1, 0), "rotation": 0, "health": 100, "visible": True}
 
         # Tell existing players about new player
-        for player_id in players:
+        for player_id in list(players):
             if player_id != new_id:
                 player_info = players[player_id]
                 player_conn: socket.socket = player_info["socket"]
@@ -170,7 +170,7 @@ def main():
                     pass
 
         # Tell new player about existing players
-        for player_id in players:
+        for player_id in list(players):
             if player_id != new_id:
                 player_info = players[player_id]
                 try:
