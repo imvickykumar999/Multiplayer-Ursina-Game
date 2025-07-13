@@ -1,4 +1,4 @@
-## 🐍 Convert Python Script to EXE (Windows + Linux) using PyInstaller & PyArmor
+# 🐍 Convert Python Script to EXE (Windows + Linux) using PyInstaller & PyArmor
 
 If you've ever made a Python app or game and wanted to **share it without exposing your code**, this guide is for you. We'll cover how to convert a Python `.py` file into a standalone `.exe` on Windows—and also make it executable on Linux (Ubuntu).
 
