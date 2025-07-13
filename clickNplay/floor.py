@@ -1,17 +1,31 @@
-import os
+import os, sys
 import ursina
+from pathlib import Path
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works in development and PyInstaller bundle """
+    try:
+        base_path = Path(sys._MEIPASS)
+    except AttributeError:
+        base_path = Path(__file__).parent
+    return base_path / relative_path
 
 
 class FloorCube(ursina.Entity):
     def __init__(self, position):
+        floor_texture_path = resource_path("assets/floor.png")
+        texture = ursina.load_texture(str(floor_texture_path))
+
         super().__init__(
             position=position,
             scale=2,
             model="cube",
-            texture=os.path.join("assets", "floor.png"),
+            texture=texture,
             collider="box"
         )
-        self.texture.filtering = None
+
+        if texture:
+            self.texture.filtering = None
 
 
 class Floor:

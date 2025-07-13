@@ -14,3 +14,22 @@
     ./main
 
 ![image](https://github.com/user-attachments/assets/9e781451-001b-4e54-877b-39038873a553)
+
+### Client EXE
+
+```bash
+pyinstaller main.py --onefile --noconsole ^
+--add-data "assets;assets" ^
+--collect-all panda3d ^
+--collect-all ursina ^
+--hidden-import bullet ^
+--hidden-import enemy ^
+--hidden-import floor ^
+--hidden-import map ^
+--hidden-import network ^
+--hidden-import player ^
+--name "clickNplayGame" ^
+--icon=icon.ico
+
+pyinstaller clickNplayGame.spec
+```
