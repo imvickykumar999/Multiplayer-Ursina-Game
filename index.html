@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Minecraft Server Status</title>
+  <title>Multiplayer Shooting Game</title>
   <meta name="theme-color" content="#4caf50">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/67197854">
@@ -107,6 +107,17 @@
     }
 
     @media (max-width: 500px) {
+      #yt-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        z-index: -1;
+        pointer-events: none;
+      }
+
       #container {
         width: 95%;
         padding: 15px;
@@ -117,7 +128,7 @@
       }
 
       body {
-        /* background: url('https://i.pinimg.com/736x/6d/9a/5b/6d9a5b8b76de46e5052a6c76835a06a7.jpg') no-repeat center center; */
+        background: url('https://raw.githubusercontent.com/imvickykumar999/Multiplayer-Ursina-Game/refs/heads/main/game/assets/bg.png') no-repeat center center;
         background-size: cover;
       }
     }
@@ -197,19 +208,49 @@
       50%      { transform: translateY(-6px); }
     }
 
-h1, .minecraft-heading {
-  font-family: 'Press Start 2P', cursive;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
+    h1, .minecraft-heading {
+      font-family: 'Press Start 2P', cursive;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    #yt-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+      pointer-events: none;
+    }
 
   </style>
 </head>
 <body>
 
+  <iframe id="yt-bg"
+          frameborder="0"
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+          title="YouTube background"
+  ></iframe>
+
+  <script>
+    const iframe = document.getElementById('yt-bg');
+
+    const isMobile = window.innerWidth <= 500;
+    const mobileVideoId = 'egdoEmEE-lw';
+    const desktopVideoId = '8KUKzbNdQHQ';
+
+    const videoId = isMobile ? mobileVideoId : desktopVideoId;
+
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&modestbranding=1&rel=0`;
+  </script>
+
   <!-- Header Section -->
   <header>
-    <h2 class="minecraft-heading">Minecraft <a href="https://blogforge.pythonanywhere.com/blogs/the-day-aryan-found-the-ultimate-minecraft-pencil-case/" target="_blank">Merchandise</a></h2>
+    <h2 class="minecraft-heading">How to <a href="https://blogforge.pythonanywhere.com/blogs/the-day-aryan-found-the-ultimate-minecraft-pencil-case/" target="_blank">Play?</a></h2>
   </header>
   
   <!-- Background Music -->
@@ -219,15 +260,29 @@ h1, .minecraft-heading {
   </audio>
 
   <div id="container">
-    <h2><strong>Book your World</strong></h2>
+    <h2><strong>Multiplayer Shooting Game</strong></h2>
     <hr>
+
     <div id="status">
-      <div class="loader"></div> <!-- Loader initially shown -->
+      <div class="card text-light bg-dark border-light mb-3" style="max-width: 100%;">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <span class="status online">🟢 Online</span>
+          <span class="badge bg-success">Made in Ursina</span>
+        </div>
+        <div class="card-body">
+          <button class="copy-btn mt-2" onclick="copyIP()">📋 Copy IP</button><hr>
+          <h5 class="card-title"><code>vicks.imvickykumar999.online</code></h5><hr>
+          <blockquote class="blockquote bg-secondary text-light p-3 rounded mt-4">
+            <p class="mb-0">Port : 11923</p>
+          </blockquote>
+        </div>
+      </div>
     </div>
+
   </div>
 
 <div class="whatsapp_float">
-  <a href="https://wa.me/918239957923?text=Hi%20Vicky%2C%20I%20want%20to%20book%20a%20Multiplayer%20Minecraft%20server%20for%20my%20team%20on%20[enter_date_here]" target="_blank">
+  <a href="https://wa.me/918239957923?text=Hi Vicky, I am unable to join game, Please help me." target="_blank">
 <img src="https://avatars.githubusercontent.com/u/67197854" width="20px" height="20px" class="whatsapp_float_btn" alt="bol7 whatsapp"></a>
 </div>
 
@@ -236,82 +291,27 @@ h1, .minecraft-heading {
     <p>If you need support, contact us at <a href="mailto:imvickykumar999@gmail.com">imvickykumar999@gmail.com</a></p>
   </footer>
   
-<script>
-  function getQueryParam(name) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(name);
-  }
+  <script>
+    function getQueryParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
 
-  // Handle theme (mode)
-  const mode = getQueryParam('mode');
-  const theme = mode === 'light' ? 'light' : 'dark'; // default = dark
-  document.body.classList.add(theme);
-  document.getElementById('container').classList.add(theme);
+    function copyIP() {
+      navigator.clipboard.writeText('vicks.imvickykumar999.online:11923')
+        .then(() => {
+          alert('IP Address copied to clipboard!');
+        })
+        .catch((err) => {
+          console.error('Error copying text: ', err);
+        });
+    }
 
-  // Server query params
-  const ip = getQueryParam('ip') || 'bedrock.imvickykumar999.online:5625';
-  const type = getQueryParam('type') === 'java' ? 'java' : 'bedrock';
-  const API_URL = `https://api.mcstatus.io/v2/status/${type}/${ip}`;
-
-  fetch(API_URL)
-    .then(response => response.json())
-    .then(data => {
-      const statusDiv = document.getElementById('status');
-      const isOnline = data.online;
-
-      if (isOnline) {
-        const motd = data.motd?.clean || 'No MOTD';
-        const version = data.version?.name_clean || data.version?.name || 'Unknown';
-        const players = `${data.players?.online}/${data.players?.max}`;
-        const gamemode = data.gamemode || '';
-        const icon = data.icon || '';
-
-	statusDiv.innerHTML = `
-	  <div class="card text-light bg-dark border-light mb-3" style="max-width: 100%;">
-	    <div class="card-header d-flex justify-content-between align-items-center">
-	      <span class="status online">🟢 Online</span>
-	      <span class="badge bg-success">${type.toUpperCase()} Server</span>
-	    </div>
-	    <div class="card-body">
-		<button class="copy-btn mt-2" onclick="copyIP()">📋 Copy IP</button><hr>
-	      <h5 class="card-title"><code>${ip}</code></h5><hr>
-	      <p class="card-text">
-		<strong>Version:</strong> <span class="badge bg-info text-dark">${version}</span><br>
-		<strong>Players:</strong> <span class="badge bg-warning text-dark">${players}</span><br>
-		${gamemode ? `<strong>Gamemode:</strong> <span class="badge bg-secondary">${gamemode}</span><br>` : ''}
-		${icon ? `<img src="${icon}" class="icon mt-2 mb-2" alt="Server Icon">` : ''}
-	      </p>
-	      <blockquote class="blockquote bg-secondary text-light p-3 rounded mt-4">
-		<p class="mb-0">${motd.replace(/\n/g, '<br>')}</p>
-	      </blockquote>
-	    </div>
-	  </div>
-	`;
-
-      } else {
-        statusDiv.innerHTML = `
-          <div class="status offline">🔴 Offline</div>
-          <div class="info"><strong>IP:</strong> ${ip}</div>
-          <div class="info"><em>The server is currently unreachable.</em></div>
-        `;
-      }
-    })
-    .catch(error => {
-      document.getElementById('status').innerHTML = 'Error fetching server status.';
-      console.error('Fetch Error:', error);
-    });
-
-  // Function to copy the IP to the clipboard
-  function copyIP() {
-    navigator.clipboard.writeText(getQueryParam('ip') || 'bedrock.imvickykumar999.online:5625')
-      .then(() => {
-        alert('IP Address copied to clipboard!');
-      })
-      .catch((err) => {
-        console.error('Error copying text: ', err);
-      });
-  }
-</script>
+    const mode = getQueryParam('mode');
+    const theme = mode === 'light' ? 'light' : 'dark';
+    document.body.classList.add(theme);
+    document.getElementById('container').classList.add(theme);
+  </script>
 
 </body>
 </html>
