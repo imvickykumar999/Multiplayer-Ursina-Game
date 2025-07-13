@@ -15,6 +15,8 @@ from PIL import Image, ImageTk
 import psutil
 import pygame
 
+PORT = 11923 # this port is what you get from playit.gg dashboard
+
 def get_connected_devices():
     ip_addresses = []
     for conn in psutil.net_connections(kind='inet'):
@@ -66,7 +68,7 @@ def get_user_input():
     port_label = tk.Label(frame, text="Enter port number:", font=custom_font, fg='lightblue', bg='#010d25')
     port_label.pack(pady=(0, 10))
 
-    port_var = tk.StringVar(value="65037")
+    port_var = tk.StringVar(value=PORT)
     port_entry = tk.Entry(frame, textvariable=port_var, font=input_font, width=25, justify='center')
     port_entry.pack(pady=(0, 30))
 
