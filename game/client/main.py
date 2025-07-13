@@ -26,9 +26,9 @@ def get_connected_devices():
 
 def get_user_input():
     root = tk.Tk()
-    # root.attributes('-fullscreen', True)
-    root.geometry("800x600")  # You can start with a default size
-    root.resizable(True, True)  # Make the window resizable
+    root.attributes('-fullscreen', True)
+    # root.geometry("800x600")  # You can start with a default size
+    # root.resizable(True, True)  # Make the window resizable
 
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
@@ -136,7 +136,7 @@ while True:
         break
 
 app = ursina.Ursina(
-    # fullscreen=True
+    fullscreen=True,
 )
 
 ursina.window.borderless = False
