@@ -198,12 +198,18 @@ def main():
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt: # Press CTRL + PAUSE/BREAK Key to exit
-        pass
-    except SystemExit:
-        pass
-    finally:
-        print("Exiting")
-        s.close()
+    while True:
+        try:
+            main()
+        except KeyboardInterrupt:
+            print("Server stopped manually.")
+            break  # Allow graceful shutdown on Ctrl+C
+        except SystemExit:
+            print("System exit triggered.")
+            break
+        except Exception as e:
+            print(f"Server crashed with error: {e}")
+            print("Restarting server in 5 seconds...\n")
+            time.sleep(5)
+        finally:
+            s.close()
