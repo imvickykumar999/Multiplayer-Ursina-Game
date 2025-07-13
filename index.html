@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Minecraft Server Status</title>
+  <meta name="theme-color" content="#4caf50">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/67197854">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- Font Awesome for icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"> <!-- Bootstrap CSS -->
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: url('https://raw.githubusercontent.com/imvickykumar999/Multiplayer-Ursina-Game/refs/heads/main/game/assets/background.jpg') no-repeat center center;
+      background-size: cover;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    #container {
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 90%;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      background-color: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      transition: background 0.3s;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 24px;
+    }
+
+    .status {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .online {
+      color: #4caf50;
+    }
+
+    .offline {
+      color: #f44336;
+    }
+
+    img.icon {
+      width: 64px;
+      height: 64px;
+      margin: 10px 0;
+      border-radius: 8px;
+    }
+
+    .info {
+      margin: 8px 0;
+      font-size: 14px;
+    }
+
+    .copy-btn {
+      cursor: pointer;
+      background-color: #00bcd4;
+      color: white;
+      font-size: 16px;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      margin-left: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    .copy-btn:hover {
+      background-color: #0097a7;
+    }
+
+    .copy-btn i {
+      margin-right: 8px;
+    }
+    
+    /* Loader CSS */
+    .loader {
+      border: 4px solid #f3f3f3; /* Light grey background */
+      border-top: 4px solid #3498db; /* Blue spinner */
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 2s linear infinite; /* Spin animation */
+      margin: 0 auto;
+    }
+
+    /* Keyframes for spinning animation */
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 500px) {
+      #container {
+        width: 95%;
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+
+      body {
+        /* background: url('https://i.pinimg.com/736x/6d/9a/5b/6d9a5b8b76de46e5052a6c76835a06a7.jpg') no-repeat center center; */
+        background-size: cover;
+      }
+    }
+    
+    /* Themes */
+    body.dark {
+      color: #fff;
+    }
+
+    #container.dark {
+      background-color: rgba(47, 62, 70, 0.85);
+    }
+
+    body.light {
+      color: #333;
+    }
+
+    #container.light {
+      background-color: rgba(255, 255, 255, 0.85);
+      color: #000;
+    }
+    
+    /* Footer and Header Styles */
+    footer, header {
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      text-align: center;
+      padding: 10px;
+      font-size: 14px;
+      position: fixed;
+      left: 0;
+      z-index: 1000;
+    }
+
+    footer {
+      bottom: 0;
+    }
+
+    header {
+      top: 0;
+    }
+
+    footer a, header a {
+      color: #00bcd4;
+      text-decoration: none;
+    }
+
+    footer a:hover, header a:hover {
+      text-decoration: underline;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: normal;
+    }
+
+    /* WhatsApp Float Button */
+    .whatsapp_float {
+      position: fixed;
+      bottom: 100px;
+      right: 30px;
+      z-index: 9;
+    }
+
+    .whatsapp_float_btn {
+      width: 70px;
+      height: 70px;
+      border-radius: 50px;
+      box-shadow: 0 4px 10px rgba(0, 255, 0, 0.5);
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-6px); }
+    }
+
+h1, .minecraft-heading {
+  font-family: 'Press Start 2P', cursive;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Header Section -->
+  <header>
+    <h2 class="minecraft-heading">Minecraft <a href="https://blogforge.pythonanywhere.com/blogs/the-day-aryan-found-the-ultimate-minecraft-pencil-case/" target="_blank">Merchandise</a></h2>
+  </header>
+  
+  <!-- Background Music -->
+  <audio id="backgroundMusic" autoplay loop>
+    <source src="https://cdn.pixabay.com/audio/2024/10/17/audio_5c559ab55e.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div id="container">
+    <h2><strong>Book your World</strong></h2>
+    <hr>
+    <div id="status">
+      <div class="loader"></div> <!-- Loader initially shown -->
+    </div>
+  </div>
+
+<div class="whatsapp_float">
+  <a href="https://wa.me/918239957923?text=Hi%20Vicky%2C%20I%20want%20to%20book%20a%20Multiplayer%20Minecraft%20server%20for%20my%20team%20on%20[enter_date_here]" target="_blank">
+<img src="https://avatars.githubusercontent.com/u/67197854" width="20px" height="20px" class="whatsapp_float_btn" alt="bol7 whatsapp"></a>
+</div>
+
+  <!-- Footer Section -->
+  <footer>
+    <p>If you need support, contact us at <a href="mailto:imvickykumar999@gmail.com">imvickykumar999@gmail.com</a></p>
+  </footer>
+  
+<script>
+  function getQueryParam(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+  }
+
+  // Handle theme (mode)
+  const mode = getQueryParam('mode');
+  const theme = mode === 'light' ? 'light' : 'dark'; // default = dark
+  document.body.classList.add(theme);
+  document.getElementById('container').classList.add(theme);
+
+  // Server query params
+  const ip = getQueryParam('ip') || 'bedrock.imvickykumar999.online:5625';
+  const type = getQueryParam('type') === 'java' ? 'java' : 'bedrock';
+  const API_URL = `https://api.mcstatus.io/v2/status/${type}/${ip}`;
+
+  fetch(API_URL)
+    .then(response => response.json())
+    .then(data => {
+      const statusDiv = document.getElementById('status');
+      const isOnline = data.online;
+
+      if (isOnline) {
+        const motd = data.motd?.clean || 'No MOTD';
+        const version = data.version?.name_clean || data.version?.name || 'Unknown';
+        const players = `${data.players?.online}/${data.players?.max}`;
+        const gamemode = data.gamemode || '';
+        const icon = data.icon || '';
+
+	statusDiv.innerHTML = `
+	  <div class="card text-light bg-dark border-light mb-3" style="max-width: 100%;">
+	    <div class="card-header d-flex justify-content-between align-items-center">
+	      <span class="status online">🟢 Online</span>
+	      <span class="badge bg-success">${type.toUpperCase()} Server</span>
+	    </div>
+	    <div class="card-body">
+		<button class="copy-btn mt-2" onclick="copyIP()">📋 Copy IP</button><hr>
+	      <h5 class="card-title"><code>${ip}</code></h5><hr>
+	      <p class="card-text">
+		<strong>Version:</strong> <span class="badge bg-info text-dark">${version}</span><br>
+		<strong>Players:</strong> <span class="badge bg-warning text-dark">${players}</span><br>
+		${gamemode ? `<strong>Gamemode:</strong> <span class="badge bg-secondary">${gamemode}</span><br>` : ''}
+		${icon ? `<img src="${icon}" class="icon mt-2 mb-2" alt="Server Icon">` : ''}
+	      </p>
+	      <blockquote class="blockquote bg-secondary text-light p-3 rounded mt-4">
+		<p class="mb-0">${motd.replace(/\n/g, '<br>')}</p>
+	      </blockquote>
+	    </div>
+	  </div>
+	`;
+
+      } else {
+        statusDiv.innerHTML = `
+          <div class="status offline">🔴 Offline</div>
+          <div class="info"><strong>IP:</strong> ${ip}</div>
+          <div class="info"><em>The server is currently unreachable.</em></div>
+        `;
+      }
+    })
+    .catch(error => {
+      document.getElementById('status').innerHTML = 'Error fetching server status.';
+      console.error('Fetch Error:', error);
+    });
+
+  // Function to copy the IP to the clipboard
+  function copyIP() {
+    navigator.clipboard.writeText(getQueryParam('ip') || 'bedrock.imvickykumar999.online:5625')
+      .then(() => {
+        alert('IP Address copied to clipboard!');
+      })
+      .catch((err) => {
+        console.error('Error copying text: ', err);
+      });
+  }
+</script>
+
+</body>
+</html>
