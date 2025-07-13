@@ -130,7 +130,7 @@ def handle_messages(identifier: str):
 
 def main():
     hostname = socket.gethostname()
-    server_addr = socket.gethostbyname(hostname)
+    server_addr = f'{socket.gethostbyname(hostname)}:{PORT}'
 
     print("\nServer started, listening for new connections...")
     print(f'IPV4 Address = {server_addr}\n')
